@@ -181,9 +181,58 @@ Function selector clashes typically happen in two scenarios:
 
 To prevent function selector clashes, developers should follow these best practices:
 
-- **Use Transparent Proxy Pattern**: This pattern, popularized by OpenZeppelin, helps mitigate selector clashes by implementing different logic for admin functions and user functions4.
+- **Use Transparent Proxy Pattern**: This pattern, popularized by OpenZeppelin, helps mitigate selector clashes by implementing different logic for admin functions and user functions.
 - **Careful Naming**: Avoid using the same function names in proxy and implementation contracts, even with different parameters.
 - **Selector Checks**: Implement checks in the proxy to ensure that selectors don't clash during upgrades.
 - **Thorough Testing**: Implement comprehensive tests that verify function selectors across all contracts and upgrades.
 - **Use Upgrade Libraries**: Utilize well-tested upgrade libraries like OpenZeppelin's that include built-in safeguards against selector clashes.
-- **UUPS Pattern**: Consider using the Universal Upgradeable Proxy Standard (UUPS) pattern, which moves upgrade logic to the implementation contract, reducing the risk of selector clashes1.
+- **UUPS Pattern**: Consider using the Universal Upgradeable Proxy Standard (UUPS) pattern, which moves upgrade logic to the implementation contract, reducing the risk of selector clashes.
+
+## UUPS Based Example
+
+### Initial Setup
+
+```shell
+forge init
+
+forge install openzeppelin/openzeppelin-contracts --no-commit
+
+# Download the Openzeppelin Upgradeable contracts - https://github.com/OpenZeppelin/openzeppelin-contracts-upgradeable
+# Documentation: https://docs.openzeppelin.com/contracts/5.x/upgradeable
+forge install openZeppelin/openzeppelin-contracts-upgradeable --no-commit
+
+# Install the foundry devops package.
+forge install Cyfrin/foundry-devops  --no-commit
+```
+
+### Run Commands
+
+```shell
+# Build the project
+forge build
+
+# Runs the test we have written to test if the proxy work as expected
+forge test
+
+# Runs the code coverage
+forge coverage
+```
+
+![Execution Evidences](readme-imgs/execution-evidences.png)
+
+#### Deployment to a testnet or mainnet
+
+##### Setup environment variables
+
+Setup the following in the .env file:
+
+- SEPOLIA_RPC_URL
+- PRIVATE_KEY
+- Optionally, add your `ETHERSCAN_API_KEY` if you want to verify your contract on [Etherscan](https://etherscan.io/).
+
+##### Deploy
+
+```shell
+# Deploy to Test Net
+make deploy ARGS="--network sepolia"
+```
