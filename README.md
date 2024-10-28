@@ -113,8 +113,6 @@ UUPS is an upgradeable smart contract pattern that aims to address some of the l
 
 ##### Diamond Pattern
 
-![Diamond Proxy Pattern](readme-imgs/diamond-proxy.png)
-
 **Key Features of the Diamond Pattern**:
 
 - **Multiple Implementation Contracts**: Unlike traditional proxy patterns that use a single implementation contract, the Diamond pattern allows a single proxy to interact with multiple implementation contracts called "facets".
@@ -129,9 +127,11 @@ Shared State: Different facets of a Diamond proxy can share internal functions, 
 2. When a function is called on the proxy, it routes the call to the appropriate facet using the selector mapping.
 3. A mandatory diamondCut() function allows for adding, removing, or replacing facets and functions.
 
-#### Major Concerns Around Proxy Contracts
+![Diamond Proxy Pattern](readme-imgs/diamond-proxy.png)
 
-##### Storage Clashes
+### Major Concerns Around Proxy Contracts
+
+#### Storage Clashes
 
 Storage clashes are a significant security concern in upgradeable smart contracts, particularly when using proxy patterns. Storage clashes occur when the storage layout of the proxy contract conflicts with that of the implementation contract. In Ethereum and similar blockchains, contract storage variables are stored in specific slots, indexed starting from zero.
 
@@ -160,7 +160,7 @@ To prevent storage clashes, developers should follow these best practices:
 - **Use Storage Layout Tools**: Employ tools that can analyze and compare storage layouts between contract versions.
 - **Unstructured Storage Pattern**: For critical variables in the proxy (like the implementation address), use unstructured storage patterns to avoid conflicts with the implementation contract1.
 
-##### Function Selector Clashes
+#### Function Selector Clashes
 
 Function selector clashes occur when different functions in the proxy and implementation contracts have the same function selector. In Solidity, each function is identified by a unique selector, which is the first four bytes of the Keccak-256 hash of the function's signature.
 
