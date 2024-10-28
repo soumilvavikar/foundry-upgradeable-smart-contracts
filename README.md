@@ -3,7 +3,7 @@
 - Upgradeable smart contracts allow developers to modify or extend the functionality of deployed contracts without disrupting the existing system or requiring users to interact with a new contract address.
 - This is achieved by separating the contract's logic and storage, enabling updates to the logic while preserving the contract's state and user interactions.
 
-## Reasons to Use Upgradeable Smart COntracts
+## Reasons to Use Upgradeable Smart Contracts
 
 - **Bug Fixes and Security Patches**: Developers can address vulnerabilities or bugs discovered after deployment without requiring users to switch to a new contract.
 - **Feature Enhancements**: New features or improvements can be added seamlessly as decentralized applications (dApps) evolve.
@@ -19,7 +19,7 @@ Parameterization is a method of designing contracts with adjustable parameters. 
 ```solidity
 uint256 private rateOfInterest;
 
-function setRoI(uint256 _roi) external {
+function setRoi(uint256 _roi) external {
     rateOfInterest = _roi;
 }
 ```
@@ -81,23 +81,7 @@ In this pattern,
 - Admins cannot call the implementation contract functions and can ONLY call admin contract functions.
 - Users cannot call the admin contract functions and can call ONLY implementation contract functions.
 
-+------------------+        +------------------------+
-|   Proxy Contract |        | Implementation Contract|
-|------------------|        |------------------------|
-| - address impl   |------->| - Business Logic       |
-| - address admin  |        | - State Variables      |
-|                  |        |                        |
-| - fallback()     |        |                        |
-| - receive()      |        |                        |
-| - upgradeTo()    |        |                        |
-+------------------+        +------------------------+
-         ^
-         |
-         |
-         |
-    +----------+
-    |  Caller  |
-    +----------+
+![Transparent Proxy](readme-imgs/transparent-proxy.png)
 
 The Transparent Proxy pattern provides a robust solution for upgradeable smart contracts by addressing the function selector clash issue and clearly separating admin and user functionalities. It's widely used in production environments and supported by popular frameworks like OpenZeppelin.
 
@@ -125,28 +109,7 @@ UUPS is an upgradeable smart contract pattern that aims to address some of the l
 2. The implementation contract includes the upgrade logic (usually through inheritance from a standard upgradeable contract).
 3. When an upgrade is needed, the upgrade function in the implementation contract is called, which updates the implementation address in the proxy's storage.
 
-+------------------+        +------------------------+
-|   Proxy Contract |        | Implementation Contract|
-|------------------|        |------------------------|
-| - address impl   |------->| - Business Logic       |
-|                  |        | - Upgrade Logic        |
-| - fallback()     |        | - State Variables      |
-|   {delegatecall} |        |                        |
-+------------------+        +------------------------+
-         ^                             |
-         |                             |
-         |      +------------------+   |
-         +------| User Interactions|   |
-                +------------------+   |
-                                       |
-                                       v
-                            +----------------------+
-                            | New Implementation   |
-                            |----------------------|
-                            | - Updated Logic      |
-                            | - Upgrade Logic      |
-                            | - State Variables    |
-                            +----------------------+
+![UUPS](readme-imgs/uups.png)
 
 ##### Diamond Pattern
 
